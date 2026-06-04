@@ -9,7 +9,7 @@ import AdminPage from './pages/AdminPage';
 export default function App() {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/PaganiniCore">
         <Routes>
           <Route path="/" element={<Hub />} />
           <Route path="/wallet" element={<WalletPage />} />
