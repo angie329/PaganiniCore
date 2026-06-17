@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { formatCurrency, formatDateTime, exportTransactionsCSV } from '../../utils/helpers';
+import { formatCurrency, formatDateTime, exportTransactionsCSV, exportAuditPDF } from '../../utils/helpers';
 
 export default function IntegrityValidator() {
   const { state } = useApp();
@@ -41,9 +41,22 @@ export default function IntegrityValidator() {
     setTimeout(() => setExportMsg(''), 3000);
   };
 
-  const handleExportPDF = () => {
-    setExportMsg('PDF generado (simulado) ✓');
-    setTimeout(() => setExportMsg(''), 3000);
+  const handleExportPDF = async () => {
+    setExportMsg('⏳ Generando PDF...');
+    try {
+      await exportAuditPDF({
+        transactions: state.transactions,
+        dbBalance,
+        calculatedBalance: forceDiscrepancy ? reportedBalance : calculatedBalance,
+        isIntact,
+        discrepancyAmount: forceDiscrepancy ? discrepancyAmount : 0,
+      });
+      setExportMsg('PDF descargado correctamente ✓');
+    } catch (err) {
+      console.error('Error generando PDF:', err);
+      setExportMsg('❌ Error al generar PDF');
+    }
+    setTimeout(() => setExportMsg(''), 4000);
   };
 
   // Running balance table
@@ -57,8 +70,8 @@ export default function IntegrityValidator() {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4 }}>Validador de Integridad Matemática</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4, color: '#0f172a' }}>Validador de Integridad Matemática</h2>
+        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
           Verifica que el saldo registrado coincide exactamente con la suma de todas las transacciones del historial.
         </p>
       </div>
@@ -201,11 +214,11 @@ export default function IntegrityValidator() {
       <div className="chart-card">
         <p className="chart-title">Registro Detallado de Transacciones (Orden Cronológico)</p>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem', color: '#0f172a' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid var(--border-default)' }}>
+              <tr style={{ borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
                 {['ID', 'Fecha', 'Descripción', 'Tipo', 'Monto', 'Comisión', 'Efecto Neto', 'Saldo Acumulado'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '8px 12px', color: 'var(--text-muted)', fontWeight: 600, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '8px 12px', color: '#475569', fontWeight: 700, fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -213,8 +226,8 @@ export default function IntegrityValidator() {
               {tableRows.map((tx, i) => {
                 const netEffect = tx.type === 'ingreso' ? tx.amount : -(tx.amount + (tx.fee || 0));
                 return (
-                  <tr key={tx.id} style={{ borderBottom: '1px solid rgba(148,163,184,0.06)', transition: 'background 150ms' }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-tertiary)'}
+                  <tr key={tx.id} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 150ms' }}
+                    onMouseEnter={e => e.currentTarget.style.background = '#f8fafc'}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
                     <td style={{ padding: '9px 12px', fontFamily: 'var(--font-mono)', color: 'var(--brand-light)', whiteSpace: 'nowrap' }}>{tx.id}</td>
@@ -240,10 +253,10 @@ export default function IntegrityValidator() {
               })}
             </tbody>
             <tfoot>
-              <tr style={{ borderTop: '2px solid var(--border-hover)', background: 'var(--bg-tertiary)' }}>
-                <td colSpan={6} style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--text-secondary)' }}>Balance Calculado (Σ Ingresos − Σ Egresos)</td>
+              <tr style={{ borderTop: '2px solid #e2e8f0', background: '#f1f5f9' }}>
+                <td colSpan={6} style={{ padding: '10px 12px', fontWeight: 700, color: '#475569' }}>Balance Calculado (Σ Ingresos − Σ Egresos)</td>
                 <td style={{ padding: '10px 12px' }} />
-                <td style={{ padding: '10px 12px', fontWeight: 800, fontSize: '1rem', color: isIntact ? 'var(--success)' : 'var(--danger)' }}>
+                <td style={{ padding: '10px 12px', fontWeight: 800, fontSize: '1rem', color: isIntact ? '#16a34a' : '#dc2626' }}>
                   {formatCurrency(forceDiscrepancy ? reportedBalance : calculatedBalance)}
                 </td>
               </tr>

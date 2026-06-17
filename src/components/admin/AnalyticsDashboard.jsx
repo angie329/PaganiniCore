@@ -13,13 +13,13 @@ const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
     <div style={{
-      background: 'var(--bg-secondary)',
-      border: '1px solid var(--border-default)',
-      borderRadius: 'var(--radius-md)',
+      background: '#ffffff',
+      border: '1px solid #e2e8f0',
+      borderRadius: '8px',
       padding: '10px 14px',
-      boxShadow: 'var(--shadow-md)',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
     }}>
-      <p style={{ fontWeight: 600, marginBottom: 4, fontSize: '0.8rem' }}>{label}</p>
+      <p style={{ fontWeight: 600, marginBottom: 4, fontSize: '0.8rem', color: '#0f172a' }}>{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ fontSize: '0.78rem', color: p.color }}>
           {p.name}: <strong>${p.value}</strong>
@@ -65,8 +65,8 @@ export default function AnalyticsDashboard() {
   return (
     <div style={{ maxWidth: 1100 }}>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4 }}>Dashboard Analítico</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4, color: '#0f172a' }}>Dashboard Analítico</h2>
+        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
           Volumen y tendencias del ecosistema Paganini en tiempo real.
         </p>
       </div>
@@ -121,11 +121,11 @@ export default function AnalyticsDashboard() {
           <p className="chart-title">Volumen de Transacciones — Últimos 7 Días ($)</p>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weeklyData} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.1)" />
-              <XAxis dataKey="date" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+              <XAxis dataKey="date" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Legend wrapperStyle={{ fontSize: '0.78rem', color: '#94a3b8' }} />
+              <Legend wrapperStyle={{ fontSize: '0.78rem', color: '#64748b' }} />
               {(appFilter === 'Todas' || appFilter === 'Suplaier') && (
                 <Bar dataKey="suplaier" name="Suplaier" fill="#7c3aed" radius={[4, 4, 0, 0]} />
               )}
@@ -155,7 +155,7 @@ export default function AnalyticsDashboard() {
                 </Pie>
                 <Tooltip
                   formatter={(v) => [`${v}%`, 'Participación']}
-                  contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-default)', borderRadius: 8, color: 'var(--text-primary)', fontSize: '0.8rem' }}
+                  contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, color: '#0f172a', fontSize: '0.8rem' }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -176,11 +176,11 @@ export default function AnalyticsDashboard() {
         <p className="chart-title">Tendencia Mensual — Transacciones por Semana</p>
         <ResponsiveContainer width="100%" height={160}>
           <LineChart data={ANALYTICS_DATA.monthlyTrend} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.1)" />
-            <XAxis dataKey="week" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
+            <XAxis dataKey="week" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
             <Tooltip
-              contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-default)', borderRadius: 8, color: 'var(--text-primary)', fontSize: '0.8rem' }}
+              contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, color: '#0f172a', fontSize: '0.8rem' }}
             />
             <Line
               type="monotone" dataKey="transacciones" name="Transacciones"

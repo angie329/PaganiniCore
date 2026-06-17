@@ -84,8 +84,8 @@ export default function TransactionTracer() {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4 }}>Trazabilidad de Transacción</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4, color: '#0f172a' }}>Trazabilidad de Transacción</h2>
+        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
           Busca por ID de transacción para visualizar el pipeline completo de procesamiento.
         </p>
       </div>
@@ -259,12 +259,12 @@ export default function TransactionTracer() {
                 { label: 'Hash',             value: foundTx.hash,                    mono: true  },
                 { label: 'IP Origen',        value: foundTx.ipOrigin,                mono: true  },
               ].map((row, i) => (
-                <div key={i} style={{ background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
-                  <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{row.label}</p>
+                <div key={i} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
+                  <p style={{ fontSize: '0.68rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{row.label}</p>
                   <p style={{
                     fontSize: '0.82rem', fontWeight: 600,
                     fontFamily: row.mono ? 'var(--font-mono)' : undefined,
-                    color: row.label === 'Estado' ? (foundTx.status === 'exitoso' ? 'var(--success)' : 'var(--danger)') : 'var(--text-primary)',
+                    color: row.label === 'Estado' ? (foundTx.status === 'exitoso' ? '#16a34a' : '#dc2626') : '#0f172a',
                     wordBreak: 'break-all',
                   }}>
                     {row.value}
