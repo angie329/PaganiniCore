@@ -54,8 +54,8 @@ export default function AppKeyManager() {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4 }}>Gestión de Apps & API Keys</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4, color: '#0f172a' }}>Gestión de Apps & API Keys</h2>
+        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
           Administra las aplicaciones cliente autorizadas en el ecosistema Paganini.
         </p>
       </div>

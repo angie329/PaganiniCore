@@ -3,14 +3,14 @@ import { RECONCILIATION_DATA } from '../../data/mockData';
 import { formatCurrency } from '../../utils/helpers';
 
 const GATEWAYS = [
-  { id: 'paypal',     label: 'PayPal',       icon: '🅿' },
-  { id: 'placetopay', label: 'PlaceToPay',   icon: '🏦' },
+  { id: 'paypal', label: 'PayPal', icon: '🅿' },
+  { id: 'placetopay', label: 'PlaceToPay', icon: '🏦' },
 ];
 
 const SCENARIOS = [
-  { id: 'A', label: 'Escenario A — Conciliación Exitosa',           color: 'var(--success)' },
-  { id: 'B', label: 'Escenario B — Discrepancias Encontradas',      color: 'var(--warning)' },
-  { id: 'C', label: 'Escenario C — Caída de API',                   color: 'var(--danger)'  },
+  { id: 'A', label: 'Escenario A — Conciliación Exitosa', color: 'var(--success)' },
+  { id: 'B', label: 'Escenario B — Discrepancias Encontradas', color: 'var(--warning)' },
+  { id: 'C', label: 'Escenario C — Caída de API', color: 'var(--danger)' },
 ];
 
 const LOG_LINES_A = (gw) => [
@@ -95,8 +95,8 @@ export default function ReconciliationModule() {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4 }}>Conciliación con Pasarelas de Pago</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: 4, color: '#0f172a' }}>Conciliación con Pasarelas de Pago</h2>
+        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>
           Compara registros Paganini con los de pasarelas externas para detectar discrepancias.
         </p>
       </div>
@@ -186,9 +186,9 @@ export default function ReconciliationModule() {
           </div>
           <div className="recon-log">
             {logLines.map((line, i) => {
-              const isOk    = line.startsWith('✓');
+              const isOk = line.startsWith('✓');
               const isError = line.startsWith('✗');
-              const isWarn  = line.startsWith('⚠');
+              const isWarn = line.startsWith('⚠');
               const ts = new Date().toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
               return (
                 <div key={i} className="recon-log-line">
