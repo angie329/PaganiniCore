@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
-import { useApp } from '../../context/AppContext';
-import { formatCurrency } from '../../utils/helpers';
-import { ANALYTICS_DATA } from '../../data/mockData';
+import { useState, useMemo, useEffect } from 'react';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
+import { formatCurrency } from '../../../utils/helpers';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -31,11 +31,18 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export default function AnalyticsDashboard() {
   const { state } = useApp();
+  const wallet = useWallet();
   const [appFilter, setAppFilter] = useState('Todas');
   const [dateRange, setDateRange] = useState('7d');
+  const [analyticsData, setAnalyticsData] = useState(null);
+
+  useEffect(() => {
+    wallet.getAnalyticsData().then(setAnalyticsData);
+  }, [wallet]);
 
   const kpis = useMemo(() => {
-    const base = ANALYTICS_DATA.kpis;
+    if (!analyticsData) return null;
+    const base = analyticsData.kpis;
     const txCount = base.totalTransactions + state.transactions.length - 8;
     const vol = base.totalVolume + state.transactions
       .filter(t => t.type === 'egreso')
@@ -46,14 +53,17 @@ export default function AnalyticsDashboard() {
       activeUsers: base.activeUsers + (state.transactions.length > 8 ? 1 : 0),
       successRate: base.successRate,
     };
-  }, [state.transactions]);
+  }, [state.transactions, analyticsData]);
 
   const weeklyData = useMemo(() => {
-    const data = ANALYTICS_DATA.weeklyVolume.map(d => ({ ...d }));
+    if (!analyticsData) return [];
+    const data = analyticsData.weeklyVolume.map(d => ({ ...d }));
     if (appFilter === 'Suplaier') return data.map(d => ({ ...d, total: d.suplaier, cityPet: 0 }));
     if (appFilter === 'CityPet') return data.map(d => ({ ...d, total: d.cityPet, suplaier: 0 }));
     return data;
-  }, [appFilter]);
+  }, [appFilter, analyticsData]);
+
+  if (!analyticsData || !kpis) return <div style={{padding: 40, textAlign: 'center'}}>Cargando...</div>;
 
   const kpiCards = [
     { label: 'Total Transacciones', value: kpis.totalTransactions.toLocaleString(), icon: '📊', suffix: '' },
@@ -143,13 +153,13 @@ export default function AnalyticsDashboard() {
             <ResponsiveContainer width="100%" height={180}>
               <PieChart>
                 <Pie
-                  data={ANALYTICS_DATA.appDistribution}
+                  data={analyticsData.appDistribution}
                   cx="50%" cy="50%"
                   innerRadius={55} outerRadius={80}
                   dataKey="value"
                   paddingAngle={3}
                 >
-                  {ANALYTICS_DATA.appDistribution.map((entry, i) => (
+                  {analyticsData.appDistribution.map((entry, i) => (
                     <Cell key={i} fill={entry.color} />
                   ))}
                 </Pie>
@@ -160,7 +170,7 @@ export default function AnalyticsDashboard() {
               </PieChart>
             </ResponsiveContainer>
             <div style={{ display: 'flex', gap: 16, marginTop: 4 }}>
-              {ANALYTICS_DATA.appDistribution.map((d, i) => (
+              {analyticsData.appDistribution.map((d, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <div style={{ width: 10, height: 10, borderRadius: 2, background: d.color }} />
                   <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>{d.name} {d.value}%</span>
@@ -175,7 +185,7 @@ export default function AnalyticsDashboard() {
       <div className="chart-card">
         <p className="chart-title">Tendencia Mensual — Transacciones por Semana</p>
         <ResponsiveContainer width="100%" height={160}>
-          <LineChart data={ANALYTICS_DATA.monthlyTrend} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
+          <LineChart data={analyticsData.monthlyTrend} margin={{ top: 4, right: 8, bottom: 4, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" />
             <XAxis dataKey="week" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
             <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />

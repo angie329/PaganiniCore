@@ -1,12 +1,18 @@
-import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { MOCK_MERCHANT } from '../../data/mockData';
-import { formatCurrency, generateTxId, generateRef, generateHash } from '../../utils/helpers';
+import { useState, useEffect } from 'react';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
+import { formatCurrency, generateTxId, generateRef, generateHash } from '../../../utils/helpers';
 import { ArrowLeft } from 'lucide-react';
 
 export default function QRConfirmation() {
   const { state, dispatch } = useApp();
+  const wallet = useWallet();
   const [amount, setAmount] = useState('25.00');
+  const [merchant, setMerchant] = useState(null);
+
+  useEffect(() => {
+    wallet.getMerchant().then(setMerchant);
+  }, [wallet]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
@@ -21,8 +27,8 @@ export default function QRConfirmation() {
           id: generateTxId(),
           type: 'egreso',
           amount: num,
-          description: `Pago en ${MOCK_MERCHANT.name}`,
-          counterpart: MOCK_MERCHANT.name,
+          description: `Pago en ${merchant.name}`,
+          counterpart: merchant.name,
           counterpartEmail: 'cobros@suplaier.com',
           date: new Date().toISOString(),
           status: 'exitoso',
@@ -41,6 +47,8 @@ export default function QRConfirmation() {
 
   const num = parseFloat(amount) || 0;
   const canPay = num > 0 && num <= state.balance;
+
+  if (!merchant) return <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><span className="spinner"></span></div>;
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
@@ -70,19 +78,19 @@ export default function QRConfirmation() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontWeight: 800, fontSize: '1.1rem', color: 'white', flexShrink: 0,
           }}>
-            {MOCK_MERCHANT.logo}
+            {merchant.logo}
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-              <h3 style={{ fontWeight: 700, fontSize: '0.95rem' }}>{MOCK_MERCHANT.name}</h3>
-              {MOCK_MERCHANT.verified && (
+              <h3 style={{ fontWeight: 700, fontSize: '0.95rem' }}>{merchant.name}</h3>
+              {merchant.verified && (
                 <span style={{ fontSize: '0.65rem', background: 'var(--success-bg)', color: 'var(--success)', border: '1px solid var(--success-border)', borderRadius: 'var(--radius-full)', padding: '1px 6px' }}>
                   ✓ Verificado
                 </span>
               )}
             </div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{MOCK_MERCHANT.category}</p>
-            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>RUC: {MOCK_MERCHANT.ruc}</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{merchant.category}</p>
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>RUC: {merchant.ruc}</p>
           </div>
         </div>
 

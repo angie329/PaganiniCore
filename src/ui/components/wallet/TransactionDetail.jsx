@@ -1,4 +1,4 @@
-import { formatCurrency, formatDateTime } from '../../utils/helpers';
+import { formatCurrency, formatDateTime } from '../../../utils/helpers';
 
 export default function TransactionDetail({ tx, onClose }) {
   if (!tx) return null;

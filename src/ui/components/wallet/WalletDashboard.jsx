@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { formatCurrency, formatDate, formatTime, getGreeting } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { formatCurrency, formatDate, formatTime, getGreeting } from '../../../utils/helpers';
 import TransactionDetail from './TransactionDetail';
 
 const ACTION_BUTTONS = [

@@ -1,12 +1,18 @@
-import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { MOCK_MERCHANT } from '../../data/mockData';
+import { useState, useEffect } from 'react';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
 import { ArrowLeft } from 'lucide-react';
 
 export default function QRScanner() {
   const { dispatch } = useApp();
+  const wallet = useWallet();
   const [scanning, setScanning] = useState(false);
   const [scanned, setScanned] = useState(false);
+  const [merchant, setMerchant] = useState(null);
+
+  useEffect(() => {
+    wallet.getMerchant().then(setMerchant);
+  }, [wallet]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
@@ -17,6 +23,8 @@ export default function QRScanner() {
     await new Promise(r => setTimeout(r, 600));
     go('qr_confirm');
   };
+
+  if (!merchant) return <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}><span className="spinner"></span></div>;
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#000' }}>
@@ -96,7 +104,7 @@ export default function QRScanner() {
           {/* Corner label */}
           {!scanning && !scanned && (
             <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '0.72rem', marginTop: 16 }}>
-              Red Paganini • {MOCK_MERCHANT.network}
+              Red Paganini • {merchant.network}
             </p>
           )}
         </div>
@@ -120,7 +128,7 @@ export default function QRScanner() {
           )}
         </button>
         <p style={{ textAlign: 'center', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)', marginTop: 10 }}>
-          Simula enfoque en "{MOCK_MERCHANT.name}"
+          Simula enfoque en "{merchant.name}"
         </p>
       </div>
     </div>

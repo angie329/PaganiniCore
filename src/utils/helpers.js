@@ -118,7 +118,7 @@ export async function exportAuditPDF({ transactions, dbBalance, calculatedBalanc
   y += 7;
 
   const summaryItems = [
-    ['Usuario auditado',   'Matías Calderón (matias@espol.edu.ec)'],
+    ['Usuario auditado', 'Angie Alfonso (angie@espol.edu.ec)'],
     ['Fecha de auditoría', `${dateStr}`],
     ['Saldo registrado en DB', `$${dbBalance.toFixed(2)}`],
     ['Saldo calculado (Σ TX)', `$${calculatedBalance.toFixed(2)}`],

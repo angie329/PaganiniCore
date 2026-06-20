@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { useApp } from '../../context/AppContext';
-import { MOCK_USERS } from '../../data/mockData';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
 
 function PaganiniLogo({ size = 36 }) {
   return (
@@ -22,6 +22,7 @@ function PaganiniLogo({ size = 36 }) {
 
 export default function LoginScreen() {
   const { dispatch } = useApp();
+  const wallet = useWallet();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -34,11 +35,17 @@ export default function LoginScreen() {
     setError('');
     setLoading(true);
 
-    await new Promise(r => setTimeout(r, 1200));
+    const mockUsers = await wallet.getUsers();
 
-    const user = MOCK_USERS[email.toLowerCase()];
+    const user = mockUsers[email.toLowerCase()];
     if (user && user.password === password) {
-      dispatch({ type: 'LOGIN', payload: user });
+      const balance = await wallet.getBalance(user.id);
+      const transactions = await wallet.getTransactions(user.id);
+
+      dispatch({
+        type: 'LOGIN',
+        payload: { ...user, balance, transactions }
+      });
     } else {
       setLoading(false);
       setError('Correo o contraseña incorrectos');
@@ -139,7 +146,7 @@ export default function LoginScreen() {
       }}>
         <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
           <strong style={{ color: 'var(--brand-light)' }}>Demo:</strong> usa{' '}
-          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>matias@espol.edu.ec</span>
+          <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>angie@espol.edu.ec</span>
           {' '}/ <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>1234</span>
         </p>
       </div>

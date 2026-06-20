@@ -1,23 +1,29 @@
-import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { MOCK_USERS } from '../../data/mockData';
-import { formatCurrency, generateTxId, generateRef, generateHash } from '../../utils/helpers';
+import { useState, useEffect } from 'react';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
+import { formatCurrency, generateTxId, generateRef, generateHash } from '../../../utils/helpers';
 import { ArrowLeft } from 'lucide-react';
 
 export default function SendPayment() {
   const { state, dispatch } = useApp();
+  const wallet = useWallet();
   const [email, setEmail] = useState('');
   const [amount, setAmount] = useState('');
   const [contactStatus, setContactStatus] = useState(null); // null | 'found' | 'not-found'
   const [contactUser, setContactUser] = useState(null);
   const [amountError, setAmountError] = useState('');
+  const [mockUsers, setMockUsers] = useState(null);
+
+  useEffect(() => {
+    wallet.getUsers().then(setMockUsers);
+  }, [wallet]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
-  const validateEmail = (val) => {
+  const validateEmail = (val, users) => {
     const lv = val.toLowerCase().trim();
-    if (!lv) { setContactStatus(null); setContactUser(null); return; }
-    const user = MOCK_USERS[lv];
+    if (!lv || !users) { setContactStatus(null); setContactUser(null); return; }
+    const user = users[lv];
     if (user && lv !== state.currentUser?.email) {
       setContactStatus('found');
       setContactUser(user);
@@ -29,7 +35,7 @@ export default function SendPayment() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    validateEmail(e.target.value);
+    validateEmail(e.target.value, mockUsers);
   };
 
   const handleAmountChange = (e) => {

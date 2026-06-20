@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { formatCurrency, formatDateTime, exportTransactionsCSV, exportAuditPDF } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { formatCurrency, formatDateTime, exportTransactionsCSV, exportAuditPDF } from '../../../utils/helpers';
 
 export default function IntegrityValidator() {
   const { state } = useApp();

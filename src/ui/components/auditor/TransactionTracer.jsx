@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useApp } from '../../context/AppContext';
-import { formatCurrency, formatDateTime } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { formatCurrency, formatDateTime } from '../../../utils/helpers';
 
 const PIPELINE_NODES = [
   { id: 'app_cliente',      label: 'App Cliente',        icon: '📱' },

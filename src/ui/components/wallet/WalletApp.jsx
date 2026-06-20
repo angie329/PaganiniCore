@@ -8,7 +8,7 @@ import QRConfirmation from './QRConfirmation';
 import RechargeForm from './RechargeForm';
 import WithdrawForm from './WithdrawForm';
 import PinScreen from './PinScreen';
-import { useApp } from '../../context/AppContext';
+import { useApp } from '../../../context/AppContext';
 
 export default function WalletApp() {
   const { state } = useApp();

@@ -1,5 +1,5 @@
-import { useApp } from '../../context/AppContext';
-import { formatDateTime } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { formatDateTime } from '../../../utils/helpers';
 
 const ALERT_CONFIG = {
   pin_block:       { icon: '🔒', label: 'PIN Bloqueado',          badgeClass: 'badge-danger',  status: 'En proceso' },

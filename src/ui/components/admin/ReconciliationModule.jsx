@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { RECONCILIATION_DATA } from '../../data/mockData';
-import { formatCurrency } from '../../utils/helpers';
+import { useWallet } from '../../hooks/useWallet';
+import { formatCurrency } from '../../../utils/helpers';
 
 const GATEWAYS = [
   { id: 'paypal', label: 'PayPal', icon: '🅿' },
@@ -56,12 +56,18 @@ const LOG_LINES_C = (gw) => [
 ];
 
 export default function ReconciliationModule() {
+  const wallet = useWallet();
   const [gateway, setGateway] = useState('paypal');
   const [scenario, setScenario] = useState('A');
   const [running, setRunning] = useState(false);
   const [logLines, setLogLines] = useState([]);
   const [done, setDone] = useState(false);
   const [result, setResult] = useState(null);
+  const [reconciliationData, setReconciliationData] = useState(null);
+
+  useEffect(() => {
+    wallet.getReconciliationData().then(setReconciliationData);
+  }, [wallet]);
 
   const gwLabel = GATEWAYS.find(g => g.id === gateway)?.label || '';
 
@@ -87,8 +93,10 @@ export default function ReconciliationModule() {
 
     setRunning(false);
     setDone(true);
-    setResult(RECONCILIATION_DATA[gateway].scenarios[scenario]);
+    setResult(reconciliationData[gateway].scenarios[scenario]);
   };
+
+  if (!reconciliationData) return <div style={{padding: 40, textAlign: 'center'}}>Cargando...</div>;
 
   const data = result;
 

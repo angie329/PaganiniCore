@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import { useApp } from '../../context/AppContext';
-import { msToMinSec } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../../hooks/useWallet';
+import { msToMinSec } from '../../../utils/helpers';
 import { ArrowLeft } from 'lucide-react';
 
 const CORRECT_PIN = '0000';
 
 export default function PinScreen() {
   const { state, dispatch } = useApp();
+  const wallet = useWallet();
   const [digits, setDigits] = useState(['', '', '', '']);
   const [pinState, setPinState] = useState('idle'); // idle | error | success | blocked | processing
   const [shake, setShake] = useState(false);
@@ -78,6 +80,9 @@ export default function PinScreen() {
       dispatch({ type: 'PIN_SUCCESS' });
       // Execute the pending action
       if (state.pinContext) {
+        if (state.currentUser) {
+          await wallet.addTransaction(state.currentUser.id, state.pinContext.payload);
+        }
         dispatch({ type: 'ADD_TRANSACTION', payload: state.pinContext.payload });
       }
     } else {

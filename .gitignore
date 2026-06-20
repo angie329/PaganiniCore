@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.agents/skills/systematic-debugging/SKILL.md
+.agents/skills/start-session/SKILL.md
+.agents/skills/project-bridge/SKILL.md
+.agents/skills/handoff/SKILL.md
+.agents/skills/dev-session/SKILL.md

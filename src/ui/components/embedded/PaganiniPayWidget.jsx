@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useApp } from '../../context/AppContext';
-import { formatCurrency, generateTxId, generateRef, generateHash } from '../../utils/helpers';
+import { useApp } from '../../../context/AppContext';
+import { formatCurrency, generateTxId, generateRef, generateHash } from '../../../utils/helpers';
 
 function PaganiniLogoSmall() {
   return (
