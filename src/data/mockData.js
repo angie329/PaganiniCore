@@ -9,7 +9,7 @@ export const MOCK_USERS = {
     password: "1234",
     pin: "0000",
     name: "Angie Alfonso",
-    avatar: "MC",
+    avatar: "AA",
     phone: "+593 99 887 6543",
     joinedAt: "2024-03-15",
   },
