@@ -1,8 +1,6 @@
 // ============================================================
 // PAGANINI ECOSYSTEM — APP REDUCER
 // ============================================================
-import { INITIAL_BALANCE, INITIAL_TRANSACTIONS, INITIAL_APPS, INITIAL_SECURITY_ALERTS } from '../data/mockData';
-
 export const initialState = {
   // Auth
   isAuthenticated: false,
@@ -11,12 +9,12 @@ export const initialState = {
   pinAttempts: 0,
 
   // Wallet
-  balance: INITIAL_BALANCE,
-  transactions: INITIAL_TRANSACTIONS,
+  balance: 0,
+  transactions: [],
 
   // Apps & Admin
-  registeredApps: INITIAL_APPS,
-  securityAlerts: INITIAL_SECURITY_ALERTS,
+  registeredApps: [],
+  securityAlerts: [],
 
   // UI flags
   walletScreen: 'dashboard', // login | dashboard | send | qr | qr_confirm | recharge | withdraw | pin
@@ -27,7 +25,14 @@ export function appReducer(state, action) {
   switch (action.type) {
 
     case 'LOGIN':
-      return { ...state, isAuthenticated: true, currentUser: action.payload, walletScreen: 'dashboard' };
+      return { 
+        ...state, 
+        isAuthenticated: true, 
+        currentUser: action.payload, 
+        balance: action.payload.balance || 0,
+        transactions: action.payload.transactions || [],
+        walletScreen: 'dashboard' 
+      };
 
     case 'LOGOUT':
       return { ...state, isAuthenticated: false, currentUser: null, walletScreen: 'login' };

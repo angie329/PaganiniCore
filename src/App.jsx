@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
-import Hub from './pages/Hub';
-import WalletPage from './pages/WalletPage';
-import EmbeddedPage from './pages/EmbeddedPage';
-import AuditorPage from './pages/AuditorPage';
-import AdminPage from './pages/AdminPage';
+import Hub from './shared/ui/Hub';
+import WalletPage from './features/wallet/ui/WalletPage';
+import EmbeddedPage from './features/embedded/ui/EmbeddedPage';
+import AuditorPage from './features/auditor/ui/AuditorPage';
+import AdminPage from './features/admin/ui/AdminPage';
 
 export default function App() {
   return (
