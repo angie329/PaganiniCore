@@ -27,7 +27,7 @@ export default function RechargeForm() {
         const newTx = await wallet.rechargeFunds(state.currentUser.id, num, 'Tarjeta **** 4532');
         setResult('success');
         dispatch({ type: 'ADD_TRANSACTION', payload: newTx });
-      } catch (err) {
+      } catch (_err) {
         setResult('declined');
       }
       setLoading(false);

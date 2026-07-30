@@ -18,7 +18,7 @@ export function AppProvider({ children }) {
           localStorage.removeItem('paganini_pin_blocked_until');
         }
       }
-    } catch {}
+    } catch { /* localStorage may not be available in restricted environments */ }
   }, []);
 
   return (
@@ -28,6 +28,7 @@ export function AppProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- intentional: custom hook exported alongside context provider
 export function useApp() {
   const ctx = useContext(AppContext);
   if (!ctx) throw new Error('useApp must be used inside AppProvider');

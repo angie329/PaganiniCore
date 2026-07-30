@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { generateClientId, generateClientSecret, formatDateTime } from '../../../utils/helpers';
+import { generateClientId, generateClientSecret } from '../../../utils/helpers';
 import Modal from "../../../shared/ui/Modal";
 
 export default function AppKeyManager() {

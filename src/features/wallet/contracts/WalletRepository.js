@@ -8,7 +8,7 @@ export class WalletRepository {
    * @param {string} userId
    * @returns {Promise<import('../domain/Wallet').Wallet>}
    */
-  async getWallet(userId) {
+  async getWallet(_userId) {
     throw new Error('Not implemented');
   }
 
@@ -16,7 +16,7 @@ export class WalletRepository {
    * @param {string} userId
    * @returns {Promise<number>}
    */
-  async getBalance(userId) {
+  async getBalance(_userId) {
     throw new Error('Not implemented');
   }
 
@@ -24,7 +24,7 @@ export class WalletRepository {
    * @param {string} userId
    * @returns {Promise<import('../domain/Transaction').Transaction[]>}
    */
-  async getTransactions(userId) {
+  async getTransactions(_userId) {
     throw new Error('Not implemented');
   }
 
@@ -35,7 +35,7 @@ export class WalletRepository {
    * @param {string} [description]
    * @returns {Promise<import('../domain/Transaction').Transaction>}
    */
-  async transferFunds(userId, amount, recipientEmail, description) {
+  async transferFunds(_userId, _amount, _recipientEmail, _description) {
     throw new Error('Not implemented');
   }
 
@@ -44,7 +44,7 @@ export class WalletRepository {
    * @param {import('../domain/Transaction').Transaction} transaction
    * @returns {Promise<void>}
    */
-  async addTransaction(userId, transaction) {
+  async addTransaction(_userId, _transaction) {
     throw new Error('Not implemented');
   }
   async getUsers() {

@@ -30,7 +30,7 @@ export default function WithdrawForm() {
         const newTx = await wallet.withdrawFunds(state.currentUser.id, num, `Banco Pichincha ${account}`);
         setResult('success');
         dispatch({ type: 'ADD_TRANSACTION', payload: newTx });
-      } catch (err) {
+      } catch (_err) {
         setResult('declined');
       }
       setLoading(false);

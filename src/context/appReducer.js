@@ -47,7 +47,7 @@ export function appReducer(state, action) {
       const newAttempts = state.pinAttempts + 1;
       if (newAttempts >= 3) {
         const blockedUntil = Date.now() + 15 * 60 * 1000; // 15 min
-        try { localStorage.setItem('paganini_pin_blocked_until', String(blockedUntil)); } catch {}
+        try { localStorage.setItem('paganini_pin_blocked_until', String(blockedUntil)); } catch { /* localStorage not available */ }
         const newAlert = {
           id: `ALT-${Date.now()}`,
           type: 'pin_block',
@@ -71,7 +71,7 @@ export function appReducer(state, action) {
       return { ...state, pinAttempts: 0, pinContext: null };
 
     case 'UNBLOCK_PIN': {
-      try { localStorage.removeItem('paganini_pin_blocked_until'); } catch {}
+      try { localStorage.removeItem('paganini_pin_blocked_until'); } catch { /* localStorage not available */ }
       const unblockAlert = {
         id: `ALT-${Date.now()}`,
         type: 'pin_unblock',

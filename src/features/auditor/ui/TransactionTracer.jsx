@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useApp } from '../../../context/AppContext';
 import { useWallet } from '../../wallet/infra/useWallet';
 import { formatCurrency, formatDateTime } from '../../../utils/helpers';
 
@@ -12,7 +11,6 @@ const PIPELINE_NODES = [
 ];
 
 export default function TransactionTracer() {
-  const { state } = useApp();
   const adapter = useWallet();
   const [allTransactions, setAllTransactions] = useState([]);
 

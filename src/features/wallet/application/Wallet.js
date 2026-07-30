@@ -1,10 +1,8 @@
-import { Transaction } from './Transaction';
-
 /**
  * @typedef {Object} WalletProperties
  * @property {string} userId - User ID associated with the wallet
  * @property {number} balance - Current balance
- * @property {Transaction[]} transactions - List of transactions
+ * @property {import('./Transaction').Transaction[]} transactions - List of transactions
  */
 
 export class Wallet {

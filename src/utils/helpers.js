@@ -62,7 +62,7 @@ export function isValidEmail(email) {
 }
 
 // --- CSV Export ---
-export function exportTransactionsCSV(transactions, balanceActual) {
+export function exportTransactionsCSV(transactions, _balanceActual) {
   const headers = ['ID', 'Fecha', 'Tipo', 'Descripcion', 'Contraparte', 'Monto', 'Comision', 'Estado', 'Referencia'];
   const rows = transactions.map(tx => [
     tx.id,

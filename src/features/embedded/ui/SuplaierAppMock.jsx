@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { formatCurrency, generateTxId, generateRef, generateHash } from '../../../utils/helpers';
+import { formatCurrency } from '../../../utils/helpers';
 import PaganiniPayWidget from './PaganiniPayWidget';
+
+// Generate order ID once at module level — avoids impure call during render
+const DEMO_ORDER_ID = `ORD-${Math.floor(Math.random() * 90000) + 10000}`;
 
 export default function SuplaierAppMock() {
   const [showWidget, setShowWidget] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
-  const [orderId] = useState(`ORD-${Math.floor(Math.random()*90000)+10000}`);
+  const orderId = DEMO_ORDER_ID;
 
   const SERVICE = {
     name: 'Plan de Limpieza Profesional',

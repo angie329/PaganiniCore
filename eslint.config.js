@@ -17,5 +17,15 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Allow _-prefixed vars/params to be intentionally unused (interface stubs, catch blocks, etc.)
+      'no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      }],
+      // Allow empty catch blocks (they're acceptable when intent is documented)
+      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
   },
 ])
