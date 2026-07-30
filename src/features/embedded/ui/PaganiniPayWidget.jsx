@@ -58,14 +58,14 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
       try {
         await adapter.transferFunds('USR-001', amount, 'cobros@suplaier.com', 'Pago vía widget Paganini');
         setResult('success');
-      } catch (err) {
+      } catch (_err) {
         setResult('rejected');
       }
     } else {
       await new Promise(r => setTimeout(r, 1800));
       setResult('rejected');
     }
-    setLoading(false);
+    setLoading(false);  
     setPinStep(false);
   };
 

@@ -3,12 +3,16 @@ import { useApp } from '../../../context/AppContext';
 import { useWallet } from '../infra/useWallet';
 import { ArrowLeft } from 'lucide-react';
 
+// QR grid pattern computed once at module load — stable across renders
+const MODULE_QR_PATTERN = Array.from({ length: 64 }, () => Math.random() > 0.5);
+
 export default function QRScanner() {
   const { dispatch } = useApp();
   const wallet = useWallet();
   const [scanning, setScanning] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [merchant, setMerchant] = useState(null);
+  const qrPattern = MODULE_QR_PATTERN;
 
   useEffect(() => {
     wallet.getMerchant().then(setMerchant);
@@ -76,9 +80,9 @@ export default function QRScanner() {
               gap: 2,
               opacity: 0.15,
             }}>
-              {Array.from({ length: 64 }).map((_, i) => (
+              {qrPattern.map((isWhite, i) => (
                 <div key={i} style={{
-                  background: Math.random() > 0.5 ? 'white' : 'transparent',
+                  background: isWhite ? 'white' : 'transparent',
                   borderRadius: 1,
                 }} />
               ))}

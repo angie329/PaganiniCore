@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shield, Search, CheckSquare, AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, CheckSquare, AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react';
 import TransactionTracer from './TransactionTracer';
 import IntegrityValidator from './IntegrityValidator';
 import SecurityMonitor from './SecurityMonitor';

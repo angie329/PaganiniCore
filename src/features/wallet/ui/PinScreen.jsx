@@ -20,13 +20,13 @@ export default function PinScreen() {
     if (state.pinBlockedUntil) {
       const remaining = state.pinBlockedUntil - Date.now();
       if (remaining > 0) {
-        setPinState('blocked');
+        setPinState('blocked'); // eslint-disable-line react-hooks/set-state-in-effect -- intentional: restore blocked state from storage on mount
         setTimeLeft(remaining);
       } else {
         dispatch({ type: 'UNBLOCK_PIN' });
       }
     }
-  }, [state.pinBlockedUntil]);
+  }, [state.pinBlockedUntil, dispatch]);  
 
   // Countdown timer
   useEffect(() => {
@@ -43,11 +43,11 @@ export default function PinScreen() {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [pinState, state.pinBlockedUntil]);
+  }, [pinState, state.pinBlockedUntil, dispatch]);  
 
   useEffect(() => {
     if (pinState === 'idle') refs[0].current?.focus();
-  }, [pinState]);
+  }, [pinState]); // eslint-disable-line react-hooks/exhaustive-deps -- refs array is stable
 
   const handleDigit = (index, value) => {
     if (!/^\d?$/.test(value)) return;
@@ -71,7 +71,7 @@ export default function PinScreen() {
     }
   };
 
-  const validatePin = async (pin, currentDigits) => {
+  const validatePin = async (pin) => {
     if (pin === CORRECT_PIN) {
       setPinState('processing');
       await new Promise(r => setTimeout(r, 1500));
@@ -196,10 +196,10 @@ export default function PinScreen() {
               className={`pin-container ${shake ? 'animate-shake' : ''}`}
               style={{ position: 'relative' }}
             >
-              {refs.map((ref, i) => (
+              {digits.map((_digit, i) => (
                 <input
                   key={i}
-                  ref={ref}
+                  ref={refs[i]}
                   type="tel"
                   inputMode="numeric"
                   maxLength={1}

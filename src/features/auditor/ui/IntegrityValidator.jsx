@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../../../context/AppContext';
-import { formatCurrency, formatDateTime, exportTransactionsCSV, exportAuditPDF } from '../../../utils/helpers';
+import { formatCurrency, exportTransactionsCSV, exportAuditPDF } from '../../../utils/helpers';
 
 export default function IntegrityValidator() {
   const { state } = useApp();
@@ -59,13 +59,13 @@ export default function IntegrityValidator() {
     setTimeout(() => setExportMsg(''), 4000);
   };
 
-  // Running balance table
-  let running = 0;
-  const tableRows = [...state.transactions].reverse().map(tx => {
+  const tableRows = [...state.transactions].reverse().reduce((acc, tx) => {
     const delta = tx.type === 'ingreso' ? tx.amount : -(tx.amount + (tx.fee || 0));
-    running = Math.round((running + delta) * 100) / 100;
-    return { ...tx, runningBalance: running };
-  });
+    const prevBalance = acc.length > 0 ? acc[acc.length - 1].runningBalance : 0;
+    const runningBalance = Math.round((prevBalance + delta) * 100) / 100;
+    acc.push({ ...tx, runningBalance });
+    return acc;
+  }, []);
 
   return (
     <div style={{ maxWidth: 900 }}>
@@ -223,7 +223,7 @@ export default function IntegrityValidator() {
               </tr>
             </thead>
             <tbody>
-              {tableRows.map((tx, i) => {
+              {tableRows.map((tx) => {
                 const netEffect = tx.type === 'ingreso' ? tx.amount : -(tx.amount + (tx.fee || 0));
                 return (
                   <tr key={tx.id} style={{ borderBottom: '1px solid #f1f5f9', transition: 'background 150ms' }}
