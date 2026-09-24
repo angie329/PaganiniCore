@@ -78,21 +78,18 @@ export default function PinScreen() {
       setPinState('success');
       await new Promise(r => setTimeout(r, 800));
       dispatch({ type: 'PIN_SUCCESS' });
-      // Execute the pending action
+      // Execute the pending action — adapter mutates its memoryDb; no reducer dispatch needed
       if (state.pinContext && state.currentUser) {
-        let newTx;
         const { action, params, payload } = state.pinContext.payload;
         try {
           if (action === 'SEND_PAYMENT') {
-            newTx = await wallet.transferFunds(state.currentUser.id, params.amount, params.recipientEmail, params.description);
+            await wallet.transferFunds(state.currentUser.id, params.amount, params.recipientEmail, params.description);
           } else if (action === 'QR_PAYMENT') {
-            newTx = await wallet.transferFunds(state.currentUser.id, params.amount, 'comercio@paganini.com', `Pago en ${params.merchantName}`);
+            await wallet.transferFunds(state.currentUser.id, params.amount, 'comercio@paganini.com', `Pago en ${params.merchantName}`);
           } else if (payload) {
             // Fallback just in case
             await wallet.addTransaction(state.currentUser.id, payload);
-            newTx = payload;
           }
-          if (newTx) dispatch({ type: 'ADD_TRANSACTION', payload: newTx });
         } catch (err) {
           console.error(err);
         }

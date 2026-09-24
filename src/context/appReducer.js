@@ -8,10 +8,6 @@ export const initialState = {
   pinBlockedUntil: null,   // timestamp (ms) o null
   pinAttempts: 0,
 
-  // Wallet
-  balance: 0,
-  transactions: [],
-
   // Apps & Admin
   registeredApps: [],
   securityAlerts: [],
@@ -29,8 +25,6 @@ export function appReducer(state, action) {
         ...state, 
         isAuthenticated: true, 
         currentUser: action.payload, 
-        balance: action.payload.balance || 0,
-        transactions: action.payload.transactions || [],
         walletScreen: 'dashboard' 
       };
 
@@ -85,18 +79,6 @@ export function appReducer(state, action) {
         ...state,
         pinBlockedUntil: null,
         securityAlerts: [unblockAlert, ...state.securityAlerts],
-      };
-    }
-
-    case 'ADD_TRANSACTION': {
-      const tx = action.payload;
-      const delta = tx.type === 'ingreso' ? tx.amount : -(tx.amount + (tx.fee || 0));
-      return {
-        ...state,
-        balance: Math.round((state.balance + delta) * 100) / 100,
-        transactions: [tx, ...state.transactions],
-        walletScreen: 'dashboard',
-        pinContext: null,
       };
     }
 

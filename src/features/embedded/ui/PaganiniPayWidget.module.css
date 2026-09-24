@@ -1,0 +1,99 @@
+/* PaganiniPayWidget.module.css
+ * Estilos encapsulados bajo namespace .pgn-* para evitar colisiones con el host (Suplaier).
+ * Todas las clases globales (btn, btn-primary, form-input, spinner) son reemplazadas aquí.
+ */
+
+/* Base button */
+.pgn-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 200ms ease;
+  padding: 10px 18px;
+  font-family: inherit;
+}
+
+.pgn-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.pgn-btn-primary {
+  background: var(--brand-gradient, linear-gradient(135deg, #10b981, #06b6d4));
+  color: white;
+}
+
+.pgn-btn-primary:not(:disabled):hover {
+  filter: brightness(1.08);
+}
+
+.pgn-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary, #64748b);
+  border: 1px solid var(--border-default, #e2e8f0);
+}
+
+.pgn-btn-ghost:not(:disabled):hover {
+  background: var(--bg-tertiary, #f8fafc);
+}
+
+.pgn-btn-success {
+  background: var(--success, #16a34a);
+  color: white;
+}
+
+.pgn-btn-success:not(:disabled):hover {
+  filter: brightness(1.08);
+}
+
+/* Sizes */
+.pgn-btn-full {
+  width: 100%;
+}
+
+.pgn-btn-lg {
+  padding: 14px 24px;
+  font-size: 1rem;
+}
+
+/* Form input */
+.pgn-form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-default, #e2e8f0);
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #0f172a);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 150ms ease;
+  box-sizing: border-box;
+}
+
+.pgn-form-input:focus {
+  border-color: var(--brand-primary, #10b981);
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.12);
+}
+
+/* Spinner */
+.pgn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: pgn-spin 0.7s linear infinite;
+}
+
+@keyframes pgn-spin {
+  to { transform: rotate(360deg); }
+}

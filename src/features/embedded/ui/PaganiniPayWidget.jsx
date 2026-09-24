@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Wallet } from 'lucide-react';
 import { useWallet } from '../../wallet/infra/useWallet';
 import { formatCurrency } from '../../../utils/helpers';
+import styles from './PaganiniPayWidget.module.css';
 
 function PaganiniLogoSmall() {
   return (
     <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
       <defs>
         <linearGradient id="wgLogo" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7c3aed" />
+          <stop offset="0%" stopColor="#10b981" />
           <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
       </defs>
@@ -140,7 +142,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
               </p>
               {result === 'success' && (
                 <button
-                  className="btn btn-success btn-full"
+                  className={styles['pgn-btn'] + ' ' + styles['pgn-btn-success'] + ' ' + styles['pgn-btn-full']}
                   onClick={onSuccess}
                   id="widget-success-confirm"
                 >
@@ -148,7 +150,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                 </button>
               )}
               {result === 'rejected' && (
-                <button className="btn btn-ghost btn-full" onClick={() => { setResult(null); setPin(''); setCardNumber(''); }}>
+                <button className={styles['pgn-btn'] + ' ' + styles['pgn-btn-ghost'] + ' ' + styles['pgn-btn-full']} onClick={() => { setResult(null); setPin(''); setCardNumber(''); }}>
                   Intentar con otro método
                 </button>
               )}
@@ -187,15 +189,15 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                 PIN demo: <span style={{ fontFamily: 'var(--font-mono)' }}>0000</span>
               </p>
               <div style={{ display: 'flex', gap: 10 }}>
-                <button className="btn btn-ghost" onClick={() => setPinStep(false)} style={{ flex: 1 }}>Cancelar</button>
+                <button className={styles['pgn-btn'] + ' ' + styles['pgn-btn-ghost']} onClick={() => setPinStep(false)} style={{ flex: 1 }}>Cancelar</button>
                 <button
-                  className="btn btn-primary"
+                  className={styles['pgn-btn'] + ' ' + styles['pgn-btn-primary']}
                   onClick={handlePinSubmit}
                   disabled={loading || pin.length !== 4}
                   style={{ flex: 2 }}
                   id="widget-pin-confirm"
                 >
-                  {loading ? <><span className="spinner" /> Procesando...</> : 'Confirmar Pago'}
+                  {loading ? <><span className={styles['pgn-spinner']} /> Procesando...</> : 'Confirmar Pago'}
                 </button>
               </div>
             </div>
@@ -227,7 +229,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                   style={{
                     padding: '14px 16px',
                     background: method === 'wallet' ? 'var(--brand-gradient-subtle)' : 'var(--bg-tertiary)',
-                    border: `2px solid ${method === 'wallet' ? 'rgba(124,58,237,0.4)' : 'var(--border-default)'}`,
+                    border: `2px solid ${method === 'wallet' ? 'rgba(16,185,129,0.4)' : 'var(--border-default)'}`,
                     borderRadius: 'var(--radius-md)',
                     cursor: 'pointer',
                     display: 'flex',
@@ -238,7 +240,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                   id="widget-method-wallet"
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '1.3rem' }}>💜</span>
+                    <Wallet size={20} strokeWidth={1.5} color="var(--brand-primary)" />
                     <div>
                       <p style={{ fontWeight: 600, fontSize: '0.875rem' }}>Saldo Paganini</p>
                       <p style={{ fontSize: '0.75rem', color: balance >= amount ? 'var(--success)' : 'var(--danger)' }}>
@@ -258,7 +260,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                   style={{
                     padding: '14px 16px',
                     background: method === 'card' ? 'var(--brand-gradient-subtle)' : 'var(--bg-tertiary)',
-                    border: `2px solid ${method === 'card' ? 'rgba(124,58,237,0.4)' : 'var(--border-default)'}`,
+                    border: `2px solid ${method === 'card' ? 'rgba(16,185,129,0.4)' : 'var(--border-default)'}`,
                     borderRadius: 'var(--radius-md)',
                     cursor: 'pointer',
                     transition: 'all 200ms',
@@ -277,7 +279,7 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
                   {method === 'card' && (
                     <input
                       type="text"
-                      className="form-input"
+                      className={styles['pgn-form-input']}
                       placeholder="Número de tarjeta (empieza con 4 = Visa)"
                       value={cardNumber}
                       onChange={e => setCardNumber(e.target.value)}
@@ -291,12 +293,12 @@ export default function PaganiniPayWidget({ amount, merchantName, onClose, onSuc
               </div>
 
               <button
-                className="btn btn-primary btn-full btn-lg"
+                className={styles['pgn-btn'] + ' ' + styles['pgn-btn-primary'] + ' ' + styles['pgn-btn-full'] + ' ' + styles['pgn-btn-lg']}
                 onClick={handlePay}
                 disabled={loading || (method === 'wallet' && balance < amount) || (method === 'card' && !cardNumber)}
                 id="widget-pay-submit"
               >
-                {loading ? <><span className="spinner" /> Procesando...</> : `Pagar ${formatCurrency(amount)}`}
+                {loading ? <><span className={styles['pgn-spinner']} /> Procesando...</> : `Pagar ${formatCurrency(amount)}`}
               </button>
 
               <p style={{ textAlign: 'center', fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: 10 }}>

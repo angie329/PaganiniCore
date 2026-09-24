@@ -1,18 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { ArrowUpRight, ArrowDownLeft, QrCode, Plus, Lock } from 'lucide-react';
 import { useApp } from '../../../context/AppContext';
+import { useWallet } from '../infra/useWallet';
 import { formatCurrency, formatDate, formatTime, getGreeting } from '../../../utils/helpers';
 import TransactionDetail from './TransactionDetail';
 
 const ACTION_BUTTONS = [
-  { id: 'send',     label: 'Enviar',   screen: 'send',     icon: '↑', color: '#7c3aed' },
-  { id: 'qr',       label: 'QR',       screen: 'qr',       icon: '⬛', color: '#06b6d4' },
-  { id: 'recharge', label: 'Recargar', screen: 'recharge', icon: '+', color: '#10b981' },
-  { id: 'withdraw', label: 'Retirar',  screen: 'withdraw', icon: '↓', color: '#f59e0b' },
+  { id: 'send',     label: 'Enviar',   screen: 'send',     icon: <ArrowUpRight size={16} strokeWidth={1.5} />,  color: '#10b981' },
+  { id: 'qr',       label: 'QR',       screen: 'qr',       icon: <QrCode size={16} strokeWidth={1.5} />,         color: '#06b6d4' },
+  { id: 'recharge', label: 'Recargar', screen: 'recharge', icon: <Plus size={16} strokeWidth={1.5} />,           color: '#10b981' },
+  { id: 'withdraw', label: 'Retirar',  screen: 'withdraw', icon: <ArrowDownLeft size={16} strokeWidth={1.5} />, color: '#f59e0b' },
 ];
 
 export default function WalletDashboard() {
   const { state, dispatch } = useApp();
+  const adapter = useWallet();
   const [selectedTx, setSelectedTx] = useState(null);
+  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    if (!state.currentUser?.id) return;
+    adapter.getBalance(state.currentUser.id).then(setBalance);
+    adapter.getTransactions(state.currentUser.id).then(setTransactions);
+  }, [adapter, state.currentUser?.id]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
@@ -55,7 +66,7 @@ export default function WalletDashboard() {
           padding: '20px',
           position: 'relative',
           overflow: 'hidden',
-          boxShadow: '0 8px 32px rgba(124,58,237,0.35)',
+          boxShadow: '0 8px 32px rgba(16,185,129,0.25)',
         }}>
           {/* Decorative circles */}
           <div style={{
@@ -75,7 +86,7 @@ export default function WalletDashboard() {
             Saldo disponible
           </p>
           <div style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1 }} className="animate-fade-in">
-            {formatCurrency(state.balance)}
+            {formatCurrency(balance)}
           </div>
           <div style={{
             marginTop: 14,
@@ -86,7 +97,9 @@ export default function WalletDashboard() {
             justifyContent: 'space-between',
           }}>
             <span style={{ fontSize: '0.72rem', opacity: 0.75 }}>Tarjeta •••• 4532</span>
-            <span style={{ fontSize: '0.72rem', opacity: 0.75 }}>🔒 Segura</span>
+            <span style={{ fontSize: '0.72rem', opacity: 0.75, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Lock size={12} strokeWidth={1.5} /> Segura
+            </span>
           </div>
         </div>
       </div>
@@ -128,7 +141,7 @@ export default function WalletDashboard() {
                 borderRadius: '50%',
                 background: btn.color + '20',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1rem', color: btn.color, fontWeight: 700,
+                color: btn.color,
               }}>
                 {btn.icon}
               </div>
@@ -146,15 +159,17 @@ export default function WalletDashboard() {
         </div>
 
         <div style={{ flex: 1, overflowY: 'auto', padding: '0 12px 20px' }} className="stagger-children">
-          {state.transactions.slice(0, 8).map((tx) => (
+          {transactions.slice(0, 8).map((tx) => (
             <div
               key={tx.id}
               className={`tx-item ${tx.type}`}
               onClick={() => setSelectedTx(tx)}
               id={`tx-${tx.id}`}
             >
-              <div className={`tx-icon ${tx.type}`}>
-                {tx.type === 'ingreso' ? '↓' : '↑'}
+              <div className={`tx-icon ${tx.type}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {tx.type === 'ingreso'
+                  ? <ArrowDownLeft size={14} strokeWidth={1.5} />
+                  : <ArrowUpRight size={14} strokeWidth={1.5} />}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontSize: '0.82rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

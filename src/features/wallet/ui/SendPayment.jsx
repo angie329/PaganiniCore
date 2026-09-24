@@ -13,10 +13,14 @@ export default function SendPayment() {
   const [contactUser, setContactUser] = useState(null);
   const [amountError, setAmountError] = useState('');
   const [mockUsers, setMockUsers] = useState(null);
+  const [balance, setBalance] = useState(0);
 
   useEffect(() => {
     wallet.getUsers().then(setMockUsers);
-  }, [wallet]);
+    if (state.currentUser?.id) {
+      wallet.getBalance(state.currentUser.id).then(setBalance);
+    }
+  }, [wallet, state.currentUser?.id]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
@@ -42,7 +46,7 @@ export default function SendPayment() {
     const val = e.target.value;
     setAmount(val);
     const num = parseFloat(val);
-    if (!isNaN(num) && num > state.balance) {
+    if (!isNaN(num) && num > balance) {
       setAmountError('Fondos insuficientes');
     } else {
       setAmountError('');
@@ -89,7 +93,7 @@ export default function SendPayment() {
           fontSize: '0.8rem',
           color: 'var(--text-secondary)',
         }}>
-          Saldo disponible: <strong style={{ color: 'var(--text-primary)' }}>{formatCurrency(state.balance)}</strong>
+          Saldo disponible: <strong style={{ color: 'var(--text-primary)' }}>{formatCurrency(balance)}</strong>
         </div>
 
         {/* Email field */}

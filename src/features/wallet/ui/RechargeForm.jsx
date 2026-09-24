@@ -10,6 +10,7 @@ export default function RechargeForm() {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null); // null | 'success' | 'declined'
+  const [newBalance, setNewBalance] = useState(null);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
@@ -24,9 +25,10 @@ export default function RechargeForm() {
       setResult('declined');
     } else {
       try {
-        const newTx = await wallet.rechargeFunds(state.currentUser.id, num, 'Tarjeta **** 4532');
+        await wallet.rechargeFunds(state.currentUser.id, num, 'Tarjeta **** 4532');
+        const updatedBalance = await wallet.getBalance(state.currentUser.id);
+        setNewBalance(updatedBalance);
         setResult('success');
-        dispatch({ type: 'ADD_TRANSACTION', payload: newTx });
       } catch (_err) {
         setResult('declined');
       }
@@ -58,7 +60,7 @@ export default function RechargeForm() {
               : 'El límite de recarga por transacción es $500.00. Intenta con un monto menor.'}
           </p>
         </div>
-        {result === 'success' && (
+        {result === 'success' && newBalance !== null && (
           <div style={{
             background: 'var(--success-bg)',
             border: '1px solid var(--success-border)',
@@ -67,12 +69,12 @@ export default function RechargeForm() {
             textAlign: 'center',
           }}>
             <p style={{ fontSize: '0.78rem', color: 'var(--success-light)' }}>Nuevo saldo</p>
-            <p style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--success)' }}>{formatCurrency(state.balance)}</p>
+            <p style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--success)' }}>{formatCurrency(newBalance)}</p>
           </div>
         )}
         <button
           className="btn btn-primary btn-full"
-          onClick={() => { setResult(null); setAmount(''); }}
+          onClick={() => { setResult(null); setAmount(''); setNewBalance(null); }}
           id="recharge-try-again"
         >
           {result === 'success' ? 'Volver al inicio' : 'Intentar de nuevo'}

@@ -6,17 +6,24 @@ function PaganiniLogo({ size = 40 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7c3aed" />
+        <linearGradient id="paganiniLogoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#10b981" />
           <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
       </defs>
-      <rect width="40" height="40" rx="12" fill="url(#logoGrad)" />
-      {/* Stylized P letter with diamond accent */}
-      <path d="M12 10 L12 30 M12 10 L20 10 C24 10 27 13 27 17 C27 21 24 24 20 24 L12 24"
-        stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-      <circle cx="30" cy="28" r="4" fill="white" fillOpacity="0.25" />
-      <circle cx="30" cy="28" r="2" fill="white" />
+      <rect width="40" height="40" rx="12" fill="url(#paganiniLogoGrad)" />
+      {/* Stylized 'P' lettermark with soundwave/chip motif */}
+      <path
+        d="M12 10 L12 30 M12 10 L20 10 C24 10 27 13 27 17 C27 21 24 24 20 24 L12 24"
+        stroke="white"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      {/* Dot accent — transaction node */}
+      <circle cx="28" cy="28" r="3" fill="white" />
+      <circle cx="28" cy="28" r="1.5" fill="#10b981" />
     </svg>
   );
 }
@@ -24,47 +31,63 @@ function PaganiniLogo({ size = 40 }) {
 const PERSPECTIVES = [
   {
     id: 'wallet',
+    title: 'Billetera B2C',
+    subtitle: 'App Móvil del Usuario',
+    description: 'Billetera digital para usuarios finales. Permite transferencias P2P inmediatas, cobros con código QR dinámico y retiros con verificación de PIN.',
     path: '/wallet',
-    emoji: '📱',
-    title: 'Billetera Digital',
-    subtitle: 'Cliente B2C',
-    description: 'Experimenta la app móvil Paganini con pagos, transferencias, QR y recargas en tiempo real.',
-    tags: ['Login Seguro', 'Pagos QR', 'PIN Auth', 'Saldo Live'],
+    icon: '📱',
+    badge: 'B2C · Cliente Final',
+    badgeColor: 'var(--brand-primary)',
+    badgeBg: 'rgba(16, 185, 129, 0.12)',
+    badgeBorder: 'rgba(16, 185, 129, 0.3)',
+    tags: ['P2P Transfer', 'QR Scanner', 'PIN Auth', 'Mock Adapter'],
     colorClass: 'wallet',
-    iconBg: 'linear-gradient(135deg, #7c3aed, #a78bfa)',
-    accentColor: '#a78bfa',
+    iconBg: 'linear-gradient(135deg, #10b981, #059669)',
+    accentColor: '#10b981',
   },
   {
     id: 'embedded',
+    title: 'SDK de Pasarela',
+    subtitle: 'Widget Embebido B2B',
+    description: 'SDK embebible para plataformas externas como Suplaier. Checkout inline que debita directamente de la billetera Paganini con confirmación instantánea.',
     path: '/embedded',
-    emoji: '🔌',
-    title: 'Widget Embebido',
-    subtitle: 'SDK / Pasarela',
-    description: 'Integración de Paganini como pasarela de pago dentro de la app Suplaier con widget nativo.',
-    tags: ['SDK Mock', 'Checkout', 'Eventos API', 'Multi-método'],
+    icon: '🔌',
+    badge: 'B2B · SDK Embebido',
+    badgeColor: 'var(--brand-secondary)',
+    badgeBg: 'rgba(6, 182, 212, 0.12)',
+    badgeBorder: 'rgba(6, 182, 212, 0.3)',
+    tags: ['Inline Checkout', 'B2B Integration', 'E-commerce', 'Instant Debit'],
     colorClass: 'embedded',
-    iconBg: 'linear-gradient(135deg, #0891b2, #06b6d4)',
+    iconBg: 'linear-gradient(135deg, #06b6d4, #0284c7)',
     accentColor: '#06b6d4',
   },
   {
     id: 'auditor',
+    title: 'Consola de Auditoría',
+    subtitle: 'Integridad y Trazabilidad',
+    description: 'Herramienta de supervisión para auditores independientes. Verifica la integridad matemática de saldos, hashes SHA-256 de transacciones y estados de seguridad.',
     path: '/auditor',
-    emoji: '🛡️',
-    title: 'Consola Auditor',
-    subtitle: 'Auditoría Inmutable',
-    description: 'Trazabilidad de transacciones, validación de integridad matemática y monitoreo de seguridad.',
-    tags: ['Pipeline TX', 'Integridad', 'Alertas Live', 'Exportar'],
+    icon: '🛡️',
+    badge: 'Gobierno · Auditoría',
+    badgeColor: 'var(--warning)',
+    badgeBg: 'rgba(245, 158, 11, 0.12)',
+    badgeBorder: 'rgba(245, 158, 11, 0.3)',
+    tags: ['Audit Trails', 'SHA-256 Hash', 'Integridad', 'Alertas PIN'],
     colorClass: 'auditor',
-    iconBg: 'linear-gradient(135deg, #d97706, #f59e0b)',
+    iconBg: 'linear-gradient(135deg, #f59e0b, #d97706)',
     accentColor: '#f59e0b',
   },
   {
     id: 'admin',
+    title: 'Consola de Administración',
+    subtitle: 'Backoffice y Gestión',
+    description: 'Panel operativo para la entidad financiera. Métricas en tiempo real, conciliación de operaciones B2B/B2C, gestión de llaves API y exportación formal de reportes.',
     path: '/admin',
-    emoji: '⚙️',
-    title: 'Consola Admin',
-    subtitle: 'Control Global',
-    description: 'Dashboard analítico, conciliación con pasarelas externas y gestión de Apps & API Keys.',
+    icon: '⚙️',
+    badge: 'Gestión · Operaciones',
+    badgeColor: 'var(--brand-light)',
+    badgeBg: 'rgba(52, 211, 153, 0.12)',
+    badgeBorder: 'rgba(52, 211, 153, 0.3)',
     tags: ['Analytics', 'Conciliación', 'API Keys', 'Recharts'],
     colorClass: 'admin',
     iconBg: 'linear-gradient(135deg, #059669, #10b981)',
@@ -90,20 +113,35 @@ export default function Hub() {
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Ecosystem Demo</div>
             </div>
           </div>
-          <div style={{
-            background: 'var(--bg-surface)',
-            border: '1px solid var(--border-glass)',
-            borderRadius: 'var(--radius-full)',
-            padding: '8px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            backdropFilter: 'blur(12px)',
-          }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 6px var(--success)' }} />
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-              Saldo global: <strong style={{ color: 'var(--text-primary)' }}>${balance}</strong>
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => navigate('/landing')}
+              style={{
+                fontSize: '0.78rem',
+                padding: '6px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
+              <span>⚡</span> Vista Producción
+            </button>
+            <div style={{
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-glass)',
+              borderRadius: 'var(--radius-full)',
+              padding: '8px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              backdropFilter: 'blur(12px)',
+            }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 6px var(--success)' }} />
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                Saldo global: <strong style={{ color: 'var(--text-primary)' }}>${balance}</strong>
+              </span>
+            </div>
           </div>
         </header>
 

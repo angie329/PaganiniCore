@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CreditCard } from 'lucide-react';
 import { formatCurrency } from '../../../utils/helpers';
 import PaganiniPayWidget from './PaganiniPayWidget';
 
@@ -87,7 +88,7 @@ export default function SuplaierAppMock() {
         </div>
 
         <p style={{ fontSize: '0.75rem', color: '#94a3b8', textAlign: 'center' }}>
-          Procesado con seguridad por <strong style={{ color: '#7c3aed' }}>Paganini</strong>
+          Procesado con seguridad por <strong style={{ color: '#10b981' }}>Paganini</strong>
         </p>
 
         <button
@@ -233,13 +234,13 @@ export default function SuplaierAppMock() {
               onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.1)'}
               onMouseLeave={e => e.currentTarget.style.filter = 'brightness(1)'}
             >
-              <span style={{ fontSize: '1rem' }}>💳</span>
+              <CreditCard size={16} strokeWidth={1.5} />
               Pagar {formatCurrency(SERVICE.price)}
             </button>
 
             <p style={{ textAlign: 'center', fontSize: '0.68rem', color: '#94a3b8', marginTop: 8 }}>
               Procesado de forma segura por{' '}
-              <span style={{ color: '#7c3aed', fontWeight: 700 }}>Paganini</span>
+              <span style={{ color: '#10b981', fontWeight: 700 }}>Paganini</span>
             </p>
           </div>
         </div>

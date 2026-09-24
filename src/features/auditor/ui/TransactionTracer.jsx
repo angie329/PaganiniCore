@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Search, RotateCcw, AlertTriangle } from 'lucide-react';
 import { useWallet } from '../../wallet/infra/useWallet';
 import { formatCurrency, formatDateTime } from '../../../utils/helpers';
 
@@ -106,8 +107,9 @@ export default function TransactionTracer() {
           id="tracer-search-input"
           style={{ flex: 1 }}
         />
-        <button type="submit" className="btn btn-primary" id="tracer-search-btn">
-          🔍 Buscar
+        <button type="submit" className="btn btn-primary" id="tracer-search-btn"
+          style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Search size={16} strokeWidth={1.5} /> Buscar
         </button>
       </form>
 
@@ -148,8 +150,9 @@ export default function TransactionTracer() {
               <p className="chart-title" style={{ margin: 0 }}>Pipeline de Procesamiento — {foundTx.id}</p>
               <div style={{ display: 'flex', gap: 8 }}>
                 {failedNode !== null ? (
-                  <button className="btn btn-secondary btn-sm" onClick={resetFail} id="tracer-reset">
-                    ↺ Reiniciar Pipeline
+                  <button className="btn btn-secondary btn-sm" onClick={resetFail} id="tracer-reset"
+                    style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <RotateCcw size={14} strokeWidth={1.5} /> Reiniciar Pipeline
                   </button>
                 ) : (
                   <button
@@ -157,8 +160,9 @@ export default function TransactionTracer() {
                     onClick={simulateFail}
                     disabled={isAnimating}
                     id="tracer-simulate-fail"
+                    style={{ display: 'flex', alignItems: 'center', gap: 6 }}
                   >
-                    ⚠ Simular Fallo
+                    <AlertTriangle size={14} strokeWidth={1.5} /> Simular Fallo
                   </button>
                 )}
               </div>
@@ -283,7 +287,9 @@ export default function TransactionTracer() {
 
       {!foundTx && !notFound && (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
-          <div style={{ fontSize: '3rem', marginBottom: 16 }}>🔍</div>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+            <Search size={48} strokeWidth={1} />
+          </div>
           <p style={{ fontSize: '0.9rem' }}>Ingresa un ID de transacción para visualizar su trayectoria en el pipeline.</p>
           <p style={{ fontSize: '0.78rem', marginTop: 6 }}>Prueba con <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--brand-light)' }}>TX-9982</span></p>
         </div>

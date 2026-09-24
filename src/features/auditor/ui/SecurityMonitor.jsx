@@ -1,11 +1,12 @@
+import { Lock, Unlock, CreditCard, AlertTriangle, Shield } from 'lucide-react';
 import { useApp } from '../../../context/AppContext';
 import { formatDateTime } from '../../../utils/helpers';
 
 const ALERT_CONFIG = {
-  pin_block:       { icon: '🔒', label: 'PIN Bloqueado',          badgeClass: 'badge-danger',  status: 'En proceso' },
-  pin_unblock:     { icon: '🔓', label: 'PIN Desbloqueado',       badgeClass: 'badge-success', status: 'Resuelto' },
-  risky_card:      { icon: '💳', label: 'Tarjeta Riesgosa',       badgeClass: 'badge-warning', status: 'Pendiente' },
-  unusual_access:  { icon: '🚨', label: 'Acceso Inusual',         badgeClass: 'badge-danger',  status: 'En proceso' },
+  pin_block:       { icon: <Lock size={18} strokeWidth={1.5} />,          label: 'PIN Bloqueado',          badgeClass: 'badge-danger',  status: 'En proceso' },
+  pin_unblock:     { icon: <Unlock size={18} strokeWidth={1.5} />,        label: 'PIN Desbloqueado',       badgeClass: 'badge-success', status: 'Resuelto' },
+  risky_card:      { icon: <CreditCard size={18} strokeWidth={1.5} />,    label: 'Tarjeta Riesgosa',       badgeClass: 'badge-warning', status: 'Pendiente' },
+  unusual_access:  { icon: <AlertTriangle size={18} strokeWidth={1.5} />, label: 'Acceso Inusual',         badgeClass: 'badge-danger',  status: 'En proceso' },
 };
 
 const STATUS_BADGE = {
@@ -42,7 +43,7 @@ export default function SecurityMonitor() {
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
         {[
-          { label: 'Total Alertas',   value: counts.total, color: '#7c3aed', bg: 'rgba(124,58,237,0.08)', border: 'rgba(124,58,237,0.2)' },
+          { label: 'Total Alertas',   value: counts.total, color: '#10b981', bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.2)' },
           { label: 'Severidad Alta',  value: counts.alta,  color: '#dc2626', bg: '#fef2f2',               border: '#fecaca' },
           { label: 'Severidad Media', value: counts.media, color: '#d97706', bg: '#fffbeb',               border: '#fde68a' },
           { label: 'Severidad Baja',  value: counts.baja,  color: '#16a34a', bg: '#f0fdf4',               border: '#bbf7d0' },
@@ -74,13 +75,15 @@ export default function SecurityMonitor() {
 
         {alerts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '40px 20px', color: '#94a3b8' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>🛡️</div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+              <Shield size={40} strokeWidth={1.5} color="var(--text-muted, #94a3b8)" />
+            </div>
             <p>No hay alertas de seguridad registradas.</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {alerts.map((alert) => {
-              const cfg = ALERT_CONFIG[alert.type] || { icon: '⚠', label: alert.type, badgeClass: 'badge-muted', status: 'Pendiente' };
+              const cfg = ALERT_CONFIG[alert.type] || { icon: <AlertTriangle size={18} strokeWidth={1.5} />, label: alert.type, badgeClass: 'badge-muted', status: 'Pendiente' };
               const statusLabel = alert.resolved ? 'Resuelto' : cfg.status;
               const statusBadge = STATUS_BADGE[statusLabel] || 'badge-muted';
 
@@ -92,7 +95,7 @@ export default function SecurityMonitor() {
               return (
                 <div key={alert.id} className="alert-feed-item" id={`alert-${alert.id}`}>
                   <div className={`alert-dot ${alert.severity}`} />
-                  <div style={{ fontSize: '1.4rem', flexShrink: 0 }}>{cfg.icon}</div>
+                  <div style={{ fontSize: '1.4rem', flexShrink: 0, display: 'flex', alignItems: 'center' }}>{cfg.icon}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     {/* Badges row */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
@@ -110,7 +113,7 @@ export default function SecurityMonitor() {
                     <div style={{ display: 'flex', gap: 14, fontSize: '0.72rem', color: '#64748b', flexWrap: 'wrap' }}>
                       <span>👤 {alert.user}</span>
                       <span>🕒 {formatDateTime(alert.timestamp)}</span>
-                      <span style={{ fontFamily: 'var(--font-mono)', color: '#7c3aed' }}>{alert.id}</span>
+                      <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--brand-primary)' }}>{alert.id}</span>
                       {contextInfo.map((info, i) => (
                         <span key={i} style={{ fontFamily: 'var(--font-mono)' }}>{info}</span>
                       ))}

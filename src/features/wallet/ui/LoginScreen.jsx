@@ -7,7 +7,7 @@ function PaganiniLogo({ size = 36 }) {
     <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="lgLogin" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#7c3aed" />
+          <stop offset="0%" stopColor="#10b981" />
           <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
       </defs>
@@ -39,12 +39,9 @@ export default function LoginScreen() {
 
     const user = mockUsers[email.toLowerCase()];
     if (user && user.password === password) {
-      const balance = await wallet.getBalance(user.id);
-      const transactions = await wallet.getTransactions(user.id);
-
       dispatch({
         type: 'LOGIN',
-        payload: { ...user, balance, transactions }
+        payload: user,
       });
     } else {
       setLoading(false);
@@ -139,8 +136,8 @@ export default function LoginScreen() {
       {/* Hint */}
       <div style={{
         marginTop: 28,
-        background: 'rgba(124,58,237,0.08)',
-        border: '1px solid rgba(124,58,237,0.2)',
+        background: 'rgba(16,185,129,0.08)',
+        border: '1px solid rgba(16,185,129,0.2)',
         borderRadius: 'var(--radius-md)',
         padding: '12px 14px',
       }}>

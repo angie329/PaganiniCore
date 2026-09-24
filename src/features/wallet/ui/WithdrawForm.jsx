@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { useWallet } from '../infra/useWallet';
 import { formatCurrency } from '../../../utils/helpers';
@@ -11,11 +11,18 @@ export default function WithdrawForm() {
   const [account, setAccount] = useState('BP-0012345678');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    if (state.currentUser?.id) {
+      wallet.getBalance(state.currentUser.id).then(setBalance);
+    }
+  }, [wallet, state.currentUser?.id]);
 
   const go = (screen) => dispatch({ type: 'SET_WALLET_SCREEN', payload: screen });
 
   const num = parseFloat(amount) || 0;
-  const insufficientFunds = num > 0 && num > state.balance;
+  const insufficientFunds = num > 0 && num > balance;
 
   const handleWithdraw = async (e) => {
     e.preventDefault();
@@ -27,9 +34,8 @@ export default function WithdrawForm() {
       setResult('declined');
     } else {
       try {
-        const newTx = await wallet.withdrawFunds(state.currentUser.id, num, `Banco Pichincha ${account}`);
+        await wallet.withdrawFunds(state.currentUser.id, num, `Banco Pichincha ${account}`);
         setResult('success');
-        dispatch({ type: 'ADD_TRANSACTION', payload: newTx });
       } catch (_err) {
         setResult('declined');
       }
@@ -87,7 +93,7 @@ export default function WithdrawForm() {
           fontSize: '0.8rem',
           color: 'var(--text-secondary)',
         }}>
-          Saldo disponible: <strong style={{ color: 'var(--text-primary)', fontSize: '1.1rem' }}>{formatCurrency(state.balance)}</strong>
+          Saldo disponible: <strong style={{ color: 'var(--text-primary)', fontSize: '1.1rem' }}>{formatCurrency(balance)}</strong>
         </div>
 
         <div className="form-group">
